@@ -1,8 +1,8 @@
-ImageFile
+# ImageFile
 
-image util to handle image file, canvas/image/blob/file translate
+> image util to handle image file, canvas/image/blob/file translate
 
-## use
+## USAGE
 
 ```html
 <input type="file" accept="image/*" onchange="fileChange(event)">
