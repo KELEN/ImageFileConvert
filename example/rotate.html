@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>rotate</title>
+</head>
+<body>
+<div>
+    <input type="file" accept="image/*" onchange="fileChange(event)">
+    <input type="range" min="0" max="360" onchange="rangeChange(this)" value="0">
+</div>
+<script src="../dist/imageFile.umd.js"></script>
+<script>
+
+    let cvs, img;
+
+    function fileChange(ev) {
+        let file = ev.target.files[0];
+        ImageFile.fileToCanvas(file, { width: 400, height: 400 }).then(({ canvas, image }) => {
+            document.body.appendChild(canvas);
+            cvs = canvas;
+            img = image;
+        })
+    }
+
+    function rangeChange(r) {
+        if (cvs && img) {
+            ImageFile.rotate(cvs, img, r.value)
+        }
+    }
+
+</script>
+</body>
+</html>

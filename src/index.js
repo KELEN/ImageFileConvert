@@ -4,6 +4,33 @@ const CODE = {
     ['GET_IMAGE_FILE_ERROR']: -3
 };
 
+if (typeof Object.assign !== 'function') {
+    // Must be writable: true, enumerable: false, configurable: true
+    Object.defineProperty(Object, "assign", {
+        value: function assign(target, varArgs) { // .length of function is 2
+            'use strict';
+            if (target == null) { // TypeError if undefined or null
+                throw new TypeError('Cannot convert undefined or null to object');
+            }
+            var to = Object(target);
+            for (var index = 1; index < arguments.length; index++) {
+                var nextSource = arguments[index];
+                if (nextSource != null) { // Skip over if undefined or null
+                    for (var nextKey in nextSource) {
+                        // Avoid bugs when hasOwnProperty is shadowed
+                        if (Object.prototype.hasOwnProperty.call(nextSource, nextKey)) {
+                            to[nextKey] = nextSource[nextKey];
+                        }
+                    }
+                }
+            }
+            return to;
+        },
+        writable: true,
+        configurable: true
+    });
+}
+
 const ImageFile = {
     // from http://stackoverflow.com/a/32490603
     getOrientation: function (file, callback) {
@@ -53,10 +80,11 @@ const ImageFile = {
         for (var i = 0; i < bytes.length; i++) {
             ia[i] = bytes.charCodeAt(i);
         }
-        return new Blob([ab], { type: 'image/png' });
+        return new Blob([ab], {type: 'image/png'});
     },
     /**
      * dataUrl to file
+     * new File 不兼容 ie 和 safari
      */
     dataURLtoFile(dataurl, filename = 'file') {
         let arr = dataurl.split(','),
@@ -68,7 +96,7 @@ const ImageFile = {
         while (n--) {
             u8arr[n] = bstr.charCodeAt(n)
         }
-        return new File([u8arr], `${filename}.${suffix}`, { type: mime });
+        return new File([u8arr], `${filename}.${suffix}`, {type: mime});
     },
     /**
      * data url to blob
@@ -159,39 +187,62 @@ const ImageFile = {
      * @param options
      * @returns {Promise<any>}
      */
-    getImageFileData(file, options = { }) {
+    getImageFileData(file, options = {}) {
         let me = this;
         return new Promise((resolve, reject) => {
             me.getOrientation(file, function (orientation) {
-                if (orientation) {
-                    if (orientation === 6) {
-                        // 旋转90度
-                        me.fileToCanvas(file, options).then(({ canvas, image }) => {
-                            ImageFile.rotate90(canvas, image, 90);
-                            if (canvas.toBlob) {
-                                canvas.toBlob(function (blob) {
-                                    resolve(blob);
-                                });
-                            } else {
-                                // fallback ios10
-                                let dataUrl = canvas.toDataURL('image/png');
-                                let blob = me.dataURLtoBlob(dataUrl);
-                                resolve(blob);
-                            }
-                        }, err => {
-                            reject({
-                                code: CODE.GET_IMAGE_FILE_ERROR,
-                                msg: '获取图片资源失败'
-                            });
+                // 旋转90度
+                me.fileToCanvas(file, options).then(({canvas, image}) => {
+                    if (orientation === 6)
+                        ImageFile.rotate(canvas, image, 90);
+                    if (canvas.toBlob) {
+                        canvas.toBlob(function (blob) {
+                            resolve(Object.assign(blob, {
+                                name: file.name,
+                                lastModified: file.lastModified,
+                                lastModifiedDate: file.lastModifiedDate,
+                                webkitRelativePath: file.webkitRelativePath
+                            }));
                         });
                     } else {
-                        resolve(file);
+                        // fallback ios10
+                        let dataUrl = canvas.toDataURL('image/png');
+                        let blob = me.dataURLtoBlob(dataUrl);
+                        resolve(Object.assign(blob, {
+                            name: file.name,
+                            lastModified: file.lastModified,
+                            lastModifiedDate: file.lastModifiedDate,
+                            webkitRelativePath: file.webkitRelativePath
+                        }));
                     }
-                } else {
-                    resolve(file);
-                }
+                }, err => {
+                    reject({
+                        code: CODE.GET_IMAGE_FILE_ERROR,
+                        msg: '获取图片资源失败'
+                    });
+                });
             })
         });
+    },
+    /**
+     * image to canvas
+     * @param img
+     * @returns {HTMLElement}
+     */
+    imageToCanvas(img) {
+        const canvas = document.createElement('canvas'),
+            ctx = canvas.getContext('2d');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0);
+        return canvas;
+    },
+    /**
+     * 图片转base64
+     */
+    imageToBase64(img) {
+        let canvas = this.imageToCanvas(img);
+        return canvas.toDataURL('image/png');
     },
     /**
      * file to image
@@ -199,7 +250,6 @@ const ImageFile = {
      * @returns {Promise<any>}
      */
     fileToImage(file) {
-        console.log(file);
         return new Promise((resolve, reject) => {
             let reader = new FileReader();
             reader.readAsDataURL(file);
@@ -362,35 +412,19 @@ const ImageFile = {
         ctx.drawImage(img, left, top, w, h);
     },
     /**
-     * ios 旋转90度
-     * @param canvas
-     * @param img
-     * @param degree
-     */
-    rotate90(canvas, img, degree) {
-        let ctx = canvas.getContext('2d');
-        canvas.width = img.height;
-        canvas.height = img.width;
-        ctx.clearRect(0, 0, canvas.height, canvas.width);
-        ctx.save();
-        ctx.translate(canvas.width / 2, canvas.height / 2);
-        ctx.rotate(Math.PI / 4 * degree);
-        ctx.drawImage(img, -img.width / 2, -img.height / 2);
-        ctx.restore();
-    },
-    /**
      * rotate image degree
      * @param canvas
      * @param img
      * @param degree
      */
     rotate(canvas, img, degree) {
+        console.log(degree);
         let ctx = canvas.getContext('2d');
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.save();
         ctx.translate(canvas.width / 2, canvas.height / 2);
-        ctx.rotate(Math.PI / 4 * degree);
-        ctx.drawImage(img, -img.width / 2, -img.width / 2);
+        ctx.rotate(Math.PI / 180 * degree);
+        ctx.drawImage(img, -img.width / 2, -img.height / 2);
         ctx.restore();
     }
 }

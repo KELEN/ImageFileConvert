@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>base</title>
+</head>
+<body>
+<input type="file" accept="image/*" onchange="fileChange(event)">
+<script src="../dist/imageFile.umd.js"></script>
+<script>
+function fileChange(ev) {
+    let file = ev.target.files[0];
+    ImageFile.getImageFileData(file, { width: 300, height: 400, cover: false }).then(blob => {
+        let img = ImageFile.blobToImage(blob);
+        document.body.appendChild(img);
+    });
+}
+</script>
+</body>
+</html>

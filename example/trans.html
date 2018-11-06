@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>rotate</title>
+</head>
+<body>
+<div>
+    <img id="img" src="./t-rex.png" alt="">
+</div>
+<script src="../dist/imageFile.umd.js"></script>
+<script>
+
+    let img = document.getElementById('img')
+    let canvas = ImageFile.imageToCanvas(img);
+    document.body.appendChild(canvas);
+    let base64 = ImageFile.imageToBase64(img);
+    console.log(base64);
+</script>
+</body>
+</html>
