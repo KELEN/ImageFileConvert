@@ -6,16 +6,22 @@
 </head>
 <body>
 <div>
-    <img id="img" src="./t-rex.png" alt="">
+    <h2>img</h2>
+    <img id="img" src="./t-rex.jpg" alt="">
+    <h2>canvas</h2>
+    <div id="canvas"></div>
+    <h2>base64</h2>
+    <div id="base"></div>
 </div>
 <script src="../dist/imageFile.umd.js"></script>
 <script>
-
     let img = document.getElementById('img')
     let canvas = ImageFile.imageToCanvas(img);
-    document.body.appendChild(canvas);
+    document.getElementById('canvas').appendChild(canvas);
     let base64 = ImageFile.imageToBase64(img);
-    console.log(base64);
+    let img2 = document.createElement('img');
+    img2.src = base64;
+    document.getElementById('base').appendChild(img2);
 </script>
 </body>
 </html>
