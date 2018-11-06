@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>base</title>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
 </head>
 <body>
 <input type="file" accept="image/*" onchange="fileChange(event)">
@@ -10,8 +11,9 @@
 <script>
 function fileChange(ev) {
     let file = ev.target.files[0];
-    ImageFile.getImageFileData(file, { width: 300, height: 400, cover: false }).then(blob => {
+    ImageFile.getImageFileData(file, { width: 600, height: 800, cover: false }).then(blob => {
         let img = ImageFile.blobToImage(blob);
+        img.style.width = '300px';
         document.body.appendChild(img);
     });
 }

@@ -26,7 +26,7 @@ export default [
 					'external-helpers'
 				]
 			}),
-			// butternut()
+			butternut()
 		]
 	},
 
@@ -54,7 +54,7 @@ export default [
 					'external-helpers'
 				]
 			}),
-			// butternut()
+			butternut()
 		]
 	}
 ];
