@@ -10,18 +10,24 @@
     <img id="img" src="./t-rex.jpg" alt="">
     <h2>canvas</h2>
     <div id="canvas"></div>
-    <h2>base64</h2>
+    <h2>base64(必须在同一个域下面才能转)</h2>
     <div id="base"></div>
+    <h2>canvas to file</h2>
+    
 </div>
 <script src="../dist/imageFile.umd.js"></script>
 <script>
-    let img = document.getElementById('img')
-    let canvas = ImageFile.imageToCanvas(img);
-    document.getElementById('canvas').appendChild(canvas);
-    let base64 = ImageFile.imageToBase64(img);
-    let img2 = document.createElement('img');
-    img2.src = base64;
-    document.getElementById('base').appendChild(img2);
+    let img = document.getElementById('img');
+    img.onload = function() {
+        let canvas = ImageFile.imageToCanvas(img);
+        document.getElementById('canvas').appendChild(canvas);
+        let base64 = ImageFile.imageToBase64(img);
+        let img2 = document.createElement('img');
+        img2.src = base64;
+        document.getElementById('base').appendChild(img2);
+
+        
+    }
 </script>
 </body>
 </html>
