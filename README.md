@@ -2,6 +2,8 @@
 
 > image util to handle image file, canvas/image/blob/file translate
 
+## [demo](https://kelen.github.io/ImageFile/example/)
+
 ## USAGE
 
 > copy dist imageFile.umd.js for usage
