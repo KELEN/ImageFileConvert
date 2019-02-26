@@ -11,9 +11,10 @@
 <script>
 function fileChange(ev) {
     let file = ev.target.files[0];
-    ImageFile.getImageFileData(file, { width: 600, height: 800, cover: false }).then(blob => {
+    ImageFile.getImageFileData(file, { width: 600, height: 800, cover: false }).then(({ blob, base64 }) => {
         let img = ImageFile.blobToImage(blob);
         img.style.width = '300px';
+        console.log(blob, base64.length)
         document.body.appendChild(img);
     });
 }

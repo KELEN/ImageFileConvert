@@ -13,11 +13,13 @@
 <script src="../dist/imageFile.umd.js"></script>
 <script>
 function fileChange(ev) {
-    let file = ev.target.files[0];
-    ImageFile.getImageFileData(file, { width: 300, height: 400, cover: false }).then(blob => {
-        let img = ImageFile.blobToImage(blob);
-        document.body.appendChild(img);
-    });
+  let file = ev.target.files[0];
+  ImageFile.getImageFileData(file, { width: 600, height: 800, cover: false }).then(({ blob, base64 }) => {
+    let img = ImageFile.blobToImage(blob);
+    img.style.width = '300px';
+    console.log(blob, base64.length)
+    document.body.appendChild(img);
+  });
 }
 </script>
 ```
@@ -38,11 +40,11 @@ function fileChange(ev) {
 
 ```javascript
 function fileChange(ev) {
-    let file = ev.target.files[0];
-    ImageFile.getImageFileData(file, { width: 300, height: 400, cover: true }).then(blob => {
-        let img = ImageFile.blobToImage(blob);
-        document.body.appendChild(img);
-    })
+  let file = ev.target.files[0];
+  ImageFile.getImageFileData(file, { width: 300, height: 400, cover: true }).then(blob => {
+    let img = ImageFile.blobToImage(blob);
+    document.body.appendChild(img);
+  })
 }
 ```
 
@@ -73,7 +75,7 @@ let img = ImageFile.blobToImage(blob);
 
 ```javascript
 ImageFile.fileToCanvas(file, { width: 400, height: 400 }).then(({ canvas, image }) => {
-    document.body.appendChild(canvas);
+  document.body.appendChild(canvas);
 })
 ```
 
@@ -114,7 +116,7 @@ let canvas = ImageFile.imageToCanvas(img);
 
 ```javascript
 ImageFile.canvasToImage(cvs, 'image/png').then(canvas => {
-    document.body.append(canvas);
+  document.body.append(canvas);
 })
 ```
 
