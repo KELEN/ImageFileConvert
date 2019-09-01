@@ -9,7 +9,7 @@ export default [
 	{
 		input: 'src/index.js',
 		output: {
-			name: 'ImageFile',
+			name: 'ImageFileConvert',
 			file: pkg.browser,
 			format: 'umd',
 		},

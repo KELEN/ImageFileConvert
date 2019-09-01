@@ -31,7 +31,7 @@ if (typeof Object.assign !== 'function') {
   });
 }
 
-const ImageFile = {
+const ImageFileConvert = {
   // from http://stackoverflow.com/a/32490603
   getOrientation: function (file, callback) {
     var reader = new FileReader();
@@ -215,7 +215,7 @@ const ImageFile = {
         // 旋转90度
         me.fileToCanvas(file, options).then(({ canvas, image }) => {
           if (orientation === 6)
-            ImageFile.rotate(canvas, image, 90);
+            ImageFileConvert.rotate(canvas, image, 90);
           if (canvas.toBlob) {
             canvas.toBlob(function (blob) {
               transCallback(blob, resolve, reject)
@@ -456,4 +456,4 @@ const ImageFile = {
   }
 }
 
-export default ImageFile;
+export default ImageFileConvert;

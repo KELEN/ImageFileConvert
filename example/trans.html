@@ -15,13 +15,13 @@
     <h2>canvas to file</h2>
     
 </div>
-<script src="../dist/imageFile.umd.js"></script>
+<script src="../dist/imageFileConvert.umd.js"></script>
 <script>
     let img = document.getElementById('img');
     img.onload = function() {
-        let canvas = ImageFile.imageToCanvas(img);
+        let canvas = ImageFileConvert.imageToCanvas(img);
         document.getElementById('canvas').appendChild(canvas);
-        let base64 = ImageFile.imageToBase64(img);
+        let base64 = ImageFileConvert.imageToBase64(img);
         let img2 = document.createElement('img');
         img2.src = base64;
         document.getElementById('base').appendChild(img2);

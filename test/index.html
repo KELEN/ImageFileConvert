@@ -7,7 +7,7 @@
 </head>
 <body>
 <input type="file" onchange="fileChange(event)" accept="image/*">
-<script src="/dist/imageFile.umd.js"></script>
+<script src="/dist/imageFileConvert.umd.js"></script>
 <script>
     function fileChange(ev) {
         let file = ev.target.files[0];
@@ -25,7 +25,7 @@
         //     // let file = ImageFile.dataUrlToFile(canvas, 'helloworld');
         //     // console.log(file);
         // });
-        ImageFile.getImageFileData(file).then(res => {
+        ImageFileConvert.getImageFileData(file).then(res => {
             console.log(res);
         });
     }

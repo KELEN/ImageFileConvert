@@ -12,7 +12,7 @@
     <input type="range" min="0" max="360" onchange="rangeChange(this)" value="0">
     <h3>旋转度数<span id="degree"></span></h3>
 </div>
-<script src="../dist/imageFile.umd.js"></script>
+<script src="../dist/imageFileConvert.umd.js"></script>
 <script>
 
     let cvs, img;
@@ -20,7 +20,7 @@
 
     function fileChange(ev) {
         let file = ev.target.files[0];
-        ImageFile.fileToCanvas(file, { width: 400, height: 400 }).then(({ canvas, image }) => {
+        ImageFileConvert.fileToCanvas(file, { width: 400, height: 400 }).then(({ canvas, image }) => {
             document.body.appendChild(canvas);
             cvs = canvas;
             img = image;
@@ -30,7 +30,7 @@
     function rangeChange(r) {
         degree.innerText = r.value; 
         if (cvs && img) {
-            ImageFile.rotate(cvs, img, r.value)
+          ImageFileConvert.rotate(cvs, img, r.value)
         }
     }
 

@@ -1,21 +1,29 @@
-# ImageFile
+# ImageFileConvert
 
 > image util to handle image file, canvas/image/blob/file translate
 
-## [demo](https://kelen.github.io/ImageFile/example/)
+## [demo](https://kelen.github.io/ImageFileConvert/example/)
 
 ## USAGE
 
-> copy dist imageFile.umd.js for usage
+> copy dist imageFileConvert.umd.js for usage
+
+### USE NPM
+
+```
+npm i image-file-convert
+
+import ImageFileConvert from 'image-file-convert'
+```
 
 ```html
 <input type="file" accept="image/*" onchange="fileChange(event)">
-<script src="../dist/imageFile.umd.js"></script>
+<script src="../dist/imageFileConvert.umd.js"></script>
 <script>
 function fileChange(ev) {
   let file = ev.target.files[0];
-  ImageFile.getImageFileData(file, { width: 600, height: 800, cover: false }).then(({ blob, base64 }) => {
-    let img = ImageFile.blobToImage(blob);
+  ImageFileConvert.getImageFileData(file, { width: 600, height: 800, cover: false }).then(({ blob, base64 }) => {
+    let img = ImageFileConvert.blobToImage(blob);
     img.style.width = '300px';
     console.log(blob, base64.length)
     document.body.appendChild(img);
@@ -41,8 +49,8 @@ function fileChange(ev) {
 ```javascript
 function fileChange(ev) {
   let file = ev.target.files[0];
-  ImageFile.getImageFileData(file, { width: 300, height: 400, cover: true }).then(blob => {
-    let img = ImageFile.blobToImage(blob);
+  ImageFileConvert.getImageFileData(file, { width: 300, height: 400, cover: true }).then(blob => {
+    let img = ImageFileConvert.blobToImage(blob);
     document.body.appendChild(img);
   })
 }
@@ -57,7 +65,7 @@ function fileChange(ev) {
 | blob | blob | 二进制文件 |
 
 ```javascript
-let img = ImageFile.blobToImage(blob);
+let img = ImageFileConvert.blobToImage(blob);
 ```
 
 
@@ -74,7 +82,7 @@ let img = ImageFile.blobToImage(blob);
 |  | cover | 是否覆盖整个区域，默认false |
 
 ```javascript
-ImageFile.fileToCanvas(file, { width: 400, height: 400 }).then(({ canvas, image }) => {
+ImageFileConvert.fileToCanvas(file, { width: 400, height: 400 }).then(({ canvas, image }) => {
   document.body.appendChild(canvas);
 })
 ```
@@ -87,8 +95,8 @@ ImageFile.fileToCanvas(file, { width: 400, height: 400 }).then(({ canvas, image 
 | --- | --- | --- |
 | file | file type | 文件类型 |
 
-```
-ImageFile.fileToImage(file).then(img => {
+```javascript
+ImageFileConvert.fileToImage(file).then(img => {
     document.body.appendChild(img);
 })
 ```
@@ -102,7 +110,7 @@ ImageFile.fileToImage(file).then(img => {
 | img | image element | 图片 |
 
 ```javascript
-let canvas = ImageFile.imageToCanvas(img);
+let canvas = ImageFileConvert.imageToCanvas(img);
 ```
 
 #### canvasToImage(canvas);
@@ -115,7 +123,7 @@ let canvas = ImageFile.imageToCanvas(img);
 
 
 ```javascript
-ImageFile.canvasToImage(cvs, 'image/png').then(canvas => {
+ImageFileConvert.canvasToImage(cvs, 'image/png').then(canvas => {
   document.body.append(canvas);
 })
 ```
@@ -125,7 +133,7 @@ ImageFile.canvasToImage(cvs, 'image/png').then(canvas => {
 > canvas translate to file
 
 ```javascript
-let file = ImageFile.canvasToFile(cvs);
+let file = ImageFileConvert.canvasToFile(cvs);
 ```
 
 ### canvasToBase64(canvas, type = 'image/png', encoderOptions = '0.92');
@@ -133,7 +141,7 @@ let file = ImageFile.canvasToFile(cvs);
 > canvas to base64
 
 ```javascript
-let base64 = ImageFile.canvasToBase64(cvs);
+let base64 = ImageFileConvert.canvasToBase64(cvs);
 ```
 
 #### imageToBase64(img);
@@ -141,7 +149,7 @@ let base64 = ImageFile.canvasToBase64(cvs);
 > image translate to base64
 
 ```javascript
-let base64 = ImageFile.imageToBase64(img);
+let base64 = ImageFileConvert.imageToBase64(img);
 ```
 
 #### rotate(canvas, image, degree);
@@ -155,5 +163,5 @@ let base64 = ImageFile.imageToBase64(img);
 | degree  | int | 角度 |
 
 ```javascript
-ImageFile.rotate(cvs, img, degree);
+ImageFileConvert.rotate(cvs, img, degree);
 ```
